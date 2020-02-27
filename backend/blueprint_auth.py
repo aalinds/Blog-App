@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from helpers import *
+from auth_helpers import *
 import json
 import jwt
 
@@ -29,13 +29,19 @@ def register():
 def details():
   token = request.headers.get("Authorization").split(" ")[1]
   decoded_data = jwt.decode(token, 'secret', algorithm=["HS256"])
-
   user = get_user(decoded_data['id'])
-  user_details = {
-    'email': user['email']
-  }
-
-  return json.dumps(user_details)
+  
+  if len(user):
+    return json.dumps({
+      'error': False,
+      'message': 'User Found',
+      'email': user['email']
+    })
+  else:
+    return json.dumps({
+      'error': True,
+      'message': 'No User Found',
+    })
 
 @auth.route('/picture', methods=["POST"])
 def post_picture():

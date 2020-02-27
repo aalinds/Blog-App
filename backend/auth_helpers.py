@@ -1,6 +1,5 @@
 import hashlib
 import secrets
-from flask_mysqldb import MySQL
 from server import mysql
 
 def register_user(email, password):
@@ -45,17 +44,13 @@ def login_user(email, password):
 
 def get_user(user_id):
     cur = mysql.connection.cursor()
-
     cur.execute("""
         SELECT * FROM `users` WHERE id=%s
     """
     , (user_id,)
     )
     result = cur.fetchall()
-
     return result[0] if result else result
-
-    
 
 def does_user_exist(email):
     cur = mysql.connection.cursor()

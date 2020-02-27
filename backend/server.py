@@ -10,7 +10,9 @@ app.config['MYSQL_DB'] = 'blog_app'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 from blueprint_auth import auth
+from blueprint_article import article
 app.register_blueprint(auth, url_prefix='/auth')
+app.register_blueprint(article, url_prefix="/articles")
 
 @app.after_request
 def add_headers(response):

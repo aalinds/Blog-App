@@ -1,6 +1,6 @@
 import React from 'react';
 import Routes from './components/routes/Routes';
-import { loginUser } from './components/redux/actions';
+import { loginUser, toggleLoading } from './components/redux/actions';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import Navbar from './components/commons/Navbar';
@@ -21,13 +21,15 @@ class App extends React.Component {
             this.props.loginUser(true);
           }
         });
+    } else {
+      this.props.toggleLoading();
     }
   };
   render() {
     return (
       <React.Fragment>
         <Navbar />
-        <Routes />
+        {!this.props.isLoading ? <Routes /> : null}
       </React.Fragment>
     );
   }
@@ -35,8 +37,15 @@ class App extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loginUser: () => dispatch(loginUser())
+    loginUser: () => dispatch(loginUser()),
+    toggleLoading: () => dispatch(toggleLoading())
   };
 };
 
-export default connect(null, mapDispatchToProps)(App);
+const mapStateToProps = state => {
+  return {
+    isLoading: state.isLoading
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
