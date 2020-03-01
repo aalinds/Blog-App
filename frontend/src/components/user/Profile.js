@@ -14,13 +14,19 @@ class Profile extends Component {
       })
       .then(res => {
         if (!res.data.error) {
-          this.props.getUserDetails(res.data.email);
+          // console.log(typeof res.data.user)
+          this.props.getUserDetails(res.data.user);
         }
       });
   };
 
   render() {
-    return <div>{this.props.user_details}</div>;
+    return this.props.user_details ? (
+      <div className='container'>
+        <h1>{this.props.user_details.email}</h1>
+        <h1>{this.props.user_details.name}</h1>
+      </div>
+    ) : null;
   }
 }
 

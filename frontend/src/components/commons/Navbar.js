@@ -3,10 +3,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logoutUser } from '../redux/actions';
 
-// const logout = () => {
-//   localStorage.clear()
-// }
-
 function Navbar(props) {
   return (
     <nav className='navbar navbar-expand-lg navbar-light bg-light'>

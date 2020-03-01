@@ -6,7 +6,8 @@ class Register extends Component {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      name: ''
     };
   }
 
@@ -28,23 +29,63 @@ class Register extends Component {
 
   render() {
     return (
-      <form onSubmit={this.formHandler}>
-        <input
-          type='email'
-          placeholder='email'
-          name='email'
-          onChange={this.changeHandler}
-          required
-        />
-        <input
-          type='password'
-          placeholder='password'
-          name='password'
-          onChange={this.changeHandler}
-          required
-        />
-        <input type='submit' />
-      </form>
+      <div className='container'>
+        <form onSubmit={this.formHandler}>
+          <div className='form-group'>
+            <div className='input-group'>
+              <div className='input-group-prepend'>
+                <span className='input-group-text'>
+                  <i className='fas fa-user' />
+                </span>
+              </div>
+              <input
+                type='text'
+                name='name'
+                onChange={this.changeHandler}
+                className='form-control'
+                placeholder='Name'
+                required
+              />
+            </div>
+          </div>
+          <div className='form-group'>
+            <div className='input-group'>
+              <div className='input-group-prepend'>
+                <span className='input-group-text'>
+                  <i className='fas fa-at' />
+                </span>
+              </div>
+              <input
+                type='email'
+                name='email'
+                id='email'
+                onChange={this.changeHandler}
+                required
+                className='form-control'
+                placeholder='Email'
+              />
+            </div>
+          </div>
+          <div className='form-group'>
+            <div className='input-group'>
+              <div className='input-group-prepend'>
+                <span className='input-group-text'>
+                  <i className='fas fa-key' />
+                </span>
+              </div>
+              <input
+                type='password'
+                name='password'
+                onChange={this.changeHandler}
+                required
+                className='form-control'
+                placeholder='Password'
+              />
+            </div>
+          </div>
+          <input type='submit' value='Register' className='btn btn-success' />
+        </form>
+      </div>
     );
   }
 }
