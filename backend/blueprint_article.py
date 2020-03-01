@@ -2,17 +2,17 @@ from flask import Blueprint, request
 from article_helpers import *
 import jwt
 
-article = Blueprint('article', __name__)
+article = Blueprint("article", __name__)
 
-@article.route('', methods=["POST"])
+
+@article.route("", methods=["POST"])
 def add_article():
-  # print("*****", request.json.get())
-  title = request.json.get("article")["title"]
-  content = request.json.get("article")["content"]
-  category_id = request.json.get("article")["category_id"]
-  user_token = request.headers.get("Authorization").split(" ")[1]
-  user_id = jwt.decode(user_token, "secret", algorithm=["HS256"])["id"]
-  print("*****", title, content, category_id, user_id)
-  # creation = create_article(title, content, category_id, user_id)
+    title = request.json.get("title")
+    content = request.json.get("content")
+    category_id = request.json.get("category_id")
+    user_token = request.headers.get("Authorization").split(" ")[1]
+    user_id = jwt.decode(user_token, "secret", algorithm=["HS256"])["id"]
+    creation = create_article(title, content, category_id, user_id)
 
-  return 'creation'
+    return creation
+
