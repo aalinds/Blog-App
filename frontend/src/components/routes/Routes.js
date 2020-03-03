@@ -6,11 +6,22 @@ import Dashboard from '../commons/Dashboard';
 import Register from '../auth/Register';
 import Profile from '../user/Profile';
 import AddArticle from '../articles/AddArticle';
+import ShowArticle from '../articles/ShowArticle';
 
 function Routes(props) {
   return (
     <React.Fragment>
       <Switch>
+        <Route
+          path='/articles/:article_id'
+          render={routeProps =>
+            props.isLogged ? (
+              <ShowArticle {...routeProps} />
+            ) : (
+              <Redirect push to='/login' />
+            )
+          }
+        />
         <Route
           path='/addarticle'
           render={routeProps =>
