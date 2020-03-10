@@ -26,6 +26,11 @@ function Navbar(props) {
           {props.isLogged ? (
             <React.Fragment>
               <li className='nav-item'>
+                <Link to='/myarticles' className='nav-link'>
+                  My Articles
+                </Link>
+              </li>
+              <li className='nav-item'>
                 <Link to='/addarticle' className='nav-link'>
                   Add Article
                 </Link>

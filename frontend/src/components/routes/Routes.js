@@ -7,11 +7,33 @@ import Register from '../auth/Register';
 import Profile from '../user/Profile';
 import AddArticle from '../articles/AddArticle';
 import ShowArticle from '../articles/ShowArticle';
+import MyArticles from '../articles/MyArticles';
+import EditArticle from '../articles/EditArticle';
 
 function Routes(props) {
   return (
     <React.Fragment>
       <Switch>
+        <Route
+          path='/myarticles/:article_id/edit'
+          render={routeProps =>
+            props.isLogged ? (
+              <EditArticle {...routeProps} />
+            ) : (
+              <Redirect push to='/login' />
+            )
+          }
+        />
+        <Route
+          path='/myarticles'
+          render={routeProps =>
+            props.isLogged ? (
+              <MyArticles {...routeProps} />
+            ) : (
+              <Redirect push to='/login' />
+            )
+          }
+        />
         <Route
           path='/articles/:article_id'
           render={routeProps =>

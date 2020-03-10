@@ -3,6 +3,19 @@ import secrets
 from server import mysql
 
 
+def get_user_articles(user_id):
+    cur = mysql.connection.cursor()
+    cur.execute(
+        """
+        SELECT * FROM `articles` WHERE user_id=%s
+    """,
+        (user_id,),
+    )
+    result = cur.fetchall()
+
+    return result
+
+
 def register_user(name, email, password):
     user_exists = does_user_exist(email)
 

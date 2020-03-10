@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from auth_helpers import *
+from auth_helpers import login_user, register_user, get_user, get_user_articles
 import json
 import jwt
 
@@ -71,4 +71,18 @@ def post_picture():
     img.save(location)
 
     return json.dumps({"path": location})
+
+
+@auth.route("/articles")
+def get_articles():
+    user_token = request.headers.get("Authorization").split(" ")[1]
+    user_id = jwt.decode(user_token, "secret", algorithm=["HS256"])["id"]
+    articles = get_user_articles(user_id)
+
+    if articles:
+        return json.dumps(
+            {"error": False, "message": "Articles Found", "articles": articles}
+        )
+    else:
+        return json.dumps({"error": True, "message": "Articles Not Found"})
 

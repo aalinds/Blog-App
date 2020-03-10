@@ -30,11 +30,25 @@ def get_articles():
     return result
 
 
-def get_article_by_id(article_id):
+def get_article_by_id(article_id, user_id):
     cur = mysql.connection.cursor()
     cur.execute(
         """
-        select articles.id, title, content, name as username, category_name from articles join users on articles.user_id=users.id join categories on articles.category_id=categories.id where articles.id=%s
+        select articles.id, title, category_id, content, name as username, category_name from articles join users on articles.user_id=users.id join categories on articles.category_id=categories.id where articles.id=%s and articles.user_id=%s
+    """,
+        (article_id, user_id),
+    )
+    result = cur.fetchall()
+    cur.close()
+
+    return result
+
+
+def get_article_comments(article_id):
+    cur = mysql.connection.cursor()
+    cur.execute(
+        """
+        SELECT * FROM `comments` WHERE article_id=%s
     """,
         (article_id,),
     )
@@ -42,3 +56,17 @@ def get_article_by_id(article_id):
     cur.close()
 
     return result
+
+
+def add_comment(data, user_id, article_id):
+    cur = mysql.connection.cursor()
+    cur.execute(
+        """
+        INSERT INTO `comments` (data, article_id, user_id) VALUES (%s, %s, %s)
+    """,
+        (data, article_id, user_id),
+    )
+    mysql.connection.commit()
+    cur.close()
+
+    return {"error": False, "message": "Comment created"}
