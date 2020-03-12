@@ -22,8 +22,16 @@ class Login extends Component {
     e.preventDefault();
     axios.post('http://127.0.0.1:5000/auth/login', this.state).then(res => {
       if (!res.data.error) {
+        axios
+          .get('http://127.0.0.1:5000/auth/details', {
+            headers: {
+              Authorization: `Bearer ${res.data.token}`
+            }
+          })
+          .then(res => {
+            this.props.loginUser(res.data.user);
+          });
         localStorage.setItem('token', res.data.token);
-        this.props.loginUser(this.state.email);
       }
       alert(res.data.message);
     });

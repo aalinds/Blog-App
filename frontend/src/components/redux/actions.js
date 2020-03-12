@@ -1,6 +1,7 @@
-export const loginUser = () => {
+export const loginUser = user => {
   return {
-    type: 'LOGIN_USER'
+    type: 'LOGIN_USER',
+    user_details: user
   };
 };
 
@@ -10,10 +11,9 @@ export const logoutUser = () => {
   };
 };
 
-export const getUserDetails = user_details => {
+export const getUserDetails = () => {
   return {
-    type: 'GET_USER_DETAILS',
-    user_details
+    type: 'GET_USER_DETAILS'
   };
 };
 

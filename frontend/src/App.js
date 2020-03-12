@@ -18,7 +18,7 @@ class App extends React.Component {
         })
         .then(res => {
           if (!res.data.error) {
-            this.props.loginUser(true);
+            this.props.loginUser(res.data.user);
           }
         });
     } else {
@@ -37,7 +37,7 @@ class App extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loginUser: () => dispatch(loginUser()),
+    loginUser: user => dispatch(loginUser(user)),
     toggleLoading: () => dispatch(toggleLoading())
   };
 };

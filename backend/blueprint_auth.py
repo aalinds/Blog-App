@@ -54,7 +54,11 @@ def details():
             {
                 "error": False,
                 "message": "User Found",
-                "user": {"email": user["email"], "name": user["name"]},
+                "user": {
+                    "user_id": user["id"],
+                    "email": user["email"],
+                    "name": user["name"],
+                },
             }
         )
     else:

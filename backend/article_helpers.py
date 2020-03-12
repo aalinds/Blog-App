@@ -99,7 +99,7 @@ def get_article_comments(article_id):
     cur = mysql.connection.cursor()
     cur.execute(
         """
-        SELECT * FROM `comments` WHERE article_id=%s
+        SELECT * FROM `comments` JOIN `users` ON comments.user_id=users.id WHERE article_id=%s ORDER BY comments.id DESC
     """,
         (article_id,),
     )

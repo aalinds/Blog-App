@@ -8,16 +8,15 @@ const rootReducer = (state = initState, action) => {
     case 'LOGIN_USER':
       return Object.assign({}, state, {
         isLogged: true,
-        isLoading: false
+        isLoading: false,
+        user_details: action.user_details
       });
     case 'LOGOUT_USER':
       return Object.assign({}, state, {
         isLogged: false
       });
     case 'GET_USER_DETAILS':
-      return Object.assign({}, state, {
-        user_details: action.user_details
-      });
+      return state;
     case 'TOGGLE_LOADING':
       return Object.assign({}, state, {
         isLoading: !state.isLoading
