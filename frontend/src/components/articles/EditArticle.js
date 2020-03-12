@@ -34,6 +34,8 @@ class EditArticle extends React.Component {
               category_id: article.category_id
             }
           });
+        } else {
+          this.props.history.push('/');
         }
       });
 
@@ -59,12 +61,16 @@ class EditArticle extends React.Component {
     e.preventDefault();
     const token = localStorage.getItem('token');
     axios
-      .post('http://127.0.0.1:5000/articles', this.state.article, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+      .patch(
+        `http://127.0.0.1:5000/articles/${this.props.match.params.article_id}`,
+        this.state.article,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
         }
-      })
+      )
       .then(res => {
         if (!res.data.error) {
           alert(res.data.message);
@@ -76,7 +82,6 @@ class EditArticle extends React.Component {
   render() {
     return (
       <div className='container'>
-        {console.log(this.state)}
         <form onSubmit={this.formSubmit}>
           <div className='form-group'>
             <input

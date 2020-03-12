@@ -11,14 +11,21 @@ class ShowArticle extends React.Component {
 
   componentDidMount = () => {
     const article_id = this.props.match.params.article_id;
-    axios.get(`http://127.0.0.1:5000/articles/${article_id}`).then(res => {
-      if (!res.data.error) {
-        this.setState({
-          article: res.data.article
-        });
-      } else {
-      }
-    });
+    const token = localStorage.getItem('token');
+    axios
+      .get(`http://127.0.0.1:5000/articles/${article_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => {
+        if (!res.data.error) {
+          this.setState({
+            article: res.data.article
+          });
+        } else {
+        }
+      });
   };
 
   renderArticle = article => {

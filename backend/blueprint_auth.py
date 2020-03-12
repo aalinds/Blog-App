@@ -79,10 +79,6 @@ def get_articles():
     user_id = jwt.decode(user_token, "secret", algorithm=["HS256"])["id"]
     articles = get_user_articles(user_id)
 
-    if articles:
-        return json.dumps(
-            {"error": False, "message": "Articles Found", "articles": articles}
-        )
-    else:
-        return json.dumps({"error": True, "message": "Articles Not Found"})
-
+    return json.dumps(
+        {"error": False, "message": "Articles Found", "articles": articles}
+    )

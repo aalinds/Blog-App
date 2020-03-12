@@ -5,6 +5,8 @@ from article_helpers import (
     get_article_by_id,
     get_article_comments,
     add_comment,
+    edit_article,
+    delete_article_by_id,
 )
 import jwt
 import json
@@ -31,18 +33,32 @@ def articles():
         return json.dumps(all_articles)
 
 
-@article.route("/<int:article_id>")
+@article.route("/<int:article_id>", methods=["GET", "PATCH", "DELETE"])
 def get_article(article_id):
     user_token = request.headers.get("Authorization").split(" ")[1]
     user_id = jwt.decode(user_token, "secret", algorithm=["HS256"])["id"]
-    article = get_article_by_id(article_id, user_id)
 
-    if article:
-        return json.dumps(
-            {"error": False, "message": "Article found", "article": article[0]}
-        )
-    else:
-        return json.dumps({"error": True, "message": "Article does not exist"})
+    if request.method == "GET":
+        article = get_article_by_id(article_id)
+
+        if article:
+            return json.dumps(
+                {"error": False, "message": "Article found", "article": article}
+            )
+        else:
+            return json.dumps({"error": True, "message": "Article does not exist"})
+    elif request.method == "PATCH":
+        title = request.json.get("title")
+        content = request.json.get("content")
+        category_id = request.json.get("category_id")
+
+        updation = edit_article(article_id, title, content, category_id, user_id)
+
+        return updation
+    elif request.method == "DELETE":
+        deletion = delete_article_by_id(article_id, user_id)
+
+        return deletion
 
 
 @article.route("/<int:article_id>/comments", methods=["GET", "POST"])

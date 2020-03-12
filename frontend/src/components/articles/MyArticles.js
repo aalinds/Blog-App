@@ -11,7 +11,7 @@ class MyArticles extends Component {
     };
   }
 
-  componentDidMount = () => {
+  getMyArticles = () => {
     const token = localStorage.getItem('token');
     axios
       .get('http://127.0.0.1:5000/auth/articles', {
@@ -25,6 +25,26 @@ class MyArticles extends Component {
             articles: res.data.articles
           });
         }
+      });
+  };
+
+  componentDidMount = () => {
+    this.getMyArticles();
+  };
+
+  deleteHandler = article_id => {
+    const token = localStorage.getItem('token');
+    axios
+      .delete(`http://127.0.0.1:5000/articles/${article_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => {
+        if (!res.data.error) {
+          alert(res.data.message);
+        }
+        this.getMyArticles();
       });
   };
 
@@ -43,7 +63,7 @@ class MyArticles extends Component {
             <div className='col-8'>
               <div className='card-body'>
                 <Link
-                  to={`/myarticles/${article.id}`}
+                  to={`/articles/${article.id}`}
                   className='h6 card-title card-link'
                 >
                   {article.title}
@@ -57,17 +77,20 @@ class MyArticles extends Component {
               </div>
               <div className='card-footer'>
                 <Link
-                  to={`${this.props.match.path}/${article.id}/edit`}
+                  to={`myarticles/${article.id}/edit`}
                   className='btn btn-success'
                 >
                   Edit
                 </Link>
-                <Link
-                  to={`${this.props.match.path}/${article.id}/delete`}
+                <button
+                  //   to={`${this.props.match.path}/${article.id}/delete`}
                   className='btn btn-danger'
+                  onClick={() => {
+                    this.deleteHandler(article.id);
+                  }}
                 >
                   Delete
-                </Link>
+                </button>
               </div>
             </div>
           </div>
