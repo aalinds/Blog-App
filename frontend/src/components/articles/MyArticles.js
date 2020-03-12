@@ -83,7 +83,6 @@ class MyArticles extends Component {
                   Edit
                 </Link>
                 <button
-                  //   to={`${this.props.match.path}/${article.id}/delete`}
                   className='btn btn-danger'
                   onClick={() => {
                     this.deleteHandler(article.id);

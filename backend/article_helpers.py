@@ -1,10 +1,23 @@
 from server import mysql
 
 
+def delete_comments_of_article(article_id):
+    cur = mysql.connection.cursor()
+    cur.execute(
+        """
+        DELETE FROM `comments` WHERE article_id=%s
+    """,
+        (article_id,),
+    )
+    mysql.connection.commit()
+    cur.close()
+
+
 def delete_article_by_id(article_id, user_id):
     article = get_article_by_id(article_id)
 
     if article and article["user_id"] == user_id:
+        delete_comments_of_article(article_id)
         cur = mysql.connection.cursor()
         cur.execute(
             """
