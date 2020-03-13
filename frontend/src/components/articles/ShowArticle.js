@@ -66,8 +66,30 @@ class ShowArticle extends React.Component {
       .then(res => {
         if (!res.data.error) {
           alert('Comment Added');
-          this.getArticle();
           this.getArticleComments();
+        } else {
+          alert(res.data.message);
+        }
+      });
+  };
+
+  commentDeleteHandler = comment_id => {
+    const token = localStorage.getItem('token');
+    axios
+      .delete(
+        `http://127.0.0.1:5000/articles/${this.props.match.params.article_id}/comments/${comment_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      .then(res => {
+        if (!res.data.error) {
+          alert('Comment Deleted');
+          this.getArticleComments();
+        } else {
+          alert(res.data.message);
         }
       });
   };
@@ -91,7 +113,10 @@ class ShowArticle extends React.Component {
             <hr />
             <h3 className='text-center'>Comments</h3>
             <CommentForm commentFormHandler={this.commentFormHandler} />
-            <Comments comments={this.state.comments} />
+            <Comments
+              commentDeleteHandler={this.commentDeleteHandler}
+              comments={this.state.comments}
+            />
           </React.Fragment>
         ) : (
           <h1>Blog does not exist</h1>

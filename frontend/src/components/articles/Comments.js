@@ -1,38 +1,22 @@
 import React from 'react';
-// import axios from 'axios';
 import { connect } from 'react-redux';
 import { getUserDetails } from '../redux/actions';
 
 class Comments extends React.Component {
-  //   constructor(props) {
-  //     super(props);
-  //     this.state = {
-  //       comments: []
-  //     };
-  //   }
-
-  //   componentDidMount = () => {
-  //     axios
-  //       .get(`http://127.0.0.1:5000/articles/${this.props.article_id}/comments`)
-  //       .then(res => {
-  //         if (!res.data.error) {
-  //           this.setState({
-  //             comments: res.data.comments
-  //           });
-  //         }
-  //       });
-  //   };
-
   renderComments = () => {
     return this.props.comments.map(comment => {
       return (
-        <div key={comment.id} className='text-center border'>
+        <div key={comment.id} className='text-center bg-light border m-2 p-1'>
           <h5>{comment.data}</h5>
           <h6>by: @{comment.name}</h6>
           {this.props.user_details.user_id === comment.user_id ? (
             <React.Fragment>
-              <button>delete</button>
-              <button>edit</button>
+              <button
+                onClick={() => this.props.commentDeleteHandler(comment.id)}
+              >
+                delete
+              </button>
+              {/* <button>edit</button> */}
             </React.Fragment>
           ) : null}
         </div>
