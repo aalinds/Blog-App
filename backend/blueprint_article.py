@@ -8,9 +8,11 @@ from article_helpers import (
     edit_article,
     delete_article_by_id,
     delete_comment_by_id,
+    get_articles_by_pg_limit,
 )
 import jwt
 import json
+import math
 
 article = Blueprint("article", __name__)
 
@@ -27,11 +29,18 @@ def articles():
         creation = create_article(title, content, category_id, user_id)
         return json.dumps(creation)
     elif request.method == "GET":
-        all_articles = get_articles()
-        all_articles = [
-            article for article in all_articles if article["user_id"] != user_id
+        total_articles = [
+            article for article in get_articles() if article["user_id"] != user_id
         ]
-        return json.dumps(all_articles)
+        curr_pg = request.args.get("page", default=1, type=int)
+        per_pg = request.args.get("per_page", default=5, type=int)
+        total_pages = math.ceil(len(total_articles) / per_pg)
+        offset = (curr_pg - 1) * per_pg
+
+        curr_page_articles = get_articles_by_pg_limit(offset, per_pg, user_id)
+        all_articles = [article for article in curr_page_articles]
+
+        return json.dumps({"articles": all_articles, "total_pages": total_pages})
 
 
 @article.route("/<int:article_id>", methods=["GET", "PATCH", "DELETE"])

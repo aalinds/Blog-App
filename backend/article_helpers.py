@@ -1,6 +1,21 @@
 from server import mysql
 
 
+def get_articles_by_pg_limit(offset, per_page, user_id):
+    cur = mysql.connection.cursor()
+    cur.execute(
+        """
+        SELECT articles.id, articles.user_id, title, content, category_id, 
+        name FROM `articles` JOIN `users` ON articles.user_id=users.id  WHERE user_id!=%s LIMIT %s, %s 
+    """,
+        (user_id, offset, per_page,),
+    )
+    result = cur.fetchall()
+    cur.close()
+
+    return result
+
+
 def delete_comment_by_id(comment_id, user_id):
     cur = mysql.connection.cursor()
     cur.execute(
@@ -85,7 +100,7 @@ def get_articles():
     cur = mysql.connection.cursor()
     cur.execute(
         """
-       SELECT articles.id, articles.user_id, title, content, category_id, name FROM `articles` JOIN `users` ON articles.user_id=users.id;
+       SELECT articles.id, articles.user_id, title, content, category_id, name FROM `articles` JOIN `users` ON articles.user_id=users.id
 
     """
     )
